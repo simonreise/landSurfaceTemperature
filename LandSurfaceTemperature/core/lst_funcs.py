@@ -25,8 +25,8 @@ import numpy as np
 from osgeo import gdal
 from osgeo import ogr
 import os, sys, struct
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import *
+from qgis.PyQt import QtCore, QtWidgets
+from qgis.PyQt.QtCore import *
 from qgis.core import *
 from numpy import zeros
 from numpy import logical_and
@@ -53,7 +53,7 @@ class EstimateLST(QtCore.QObject):
             dsB13Lse     = gdal.Open(b13Lse, gdal.GA_ReadOnly)
             dsB14Lse     = gdal.Open(b14Lse, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
             self.kill()
         try:
@@ -214,7 +214,7 @@ class EstimateLST(QtCore.QObject):
                 ret = None
                 self.progress.emit(100)
                 self.finished.emit(ret)
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
     
     
@@ -223,7 +223,7 @@ class EstimateLST(QtCore.QObject):
             #The code below opens the NDVI raster
             dsNdviBand = gdal.Open(ndvi, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
             self.kill()
         try:
@@ -335,7 +335,7 @@ class EstimateLST(QtCore.QObject):
                 self.progress.emit(100)
                 self.finished.emit(ret)
                 
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
             
     def asterSingleChannelAlg(self, lse, radiance, briTemp, atmWaterVap, bandNo, modtran, outputPath, unit, rasterType, addToQGIS):
@@ -345,7 +345,7 @@ class EstimateLST(QtCore.QObject):
             dsLSE = gdal.Open(lse, gdal.GA_ReadOnly)
             dsRad = gdal.Open(radiance, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
             self.kill()
         try:
@@ -492,7 +492,7 @@ class EstimateLST(QtCore.QObject):
                 ret = None
                 self.progress.emit(100)
                 self.finished.emit(ret)
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
     
     def calcAsterRadiance(self, thermalBand, bandNumber, outputPath, rasterType, addToQGIS):
@@ -500,7 +500,7 @@ class EstimateLST(QtCore.QObject):
             #The code below opens the datasets
             dsThermalBand = gdal.Open(thermalBand, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
         try:
             bandNo = int(bandNumber)
@@ -584,7 +584,7 @@ class EstimateLST(QtCore.QObject):
                 ret = None
                 self.progress.emit(100)
                 self.finished.emit(ret)
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
     
     def calcAsterNDVI(self, VNIRBandPath, outputPath, rasterType, addToQGIS):
@@ -592,7 +592,7 @@ class EstimateLST(QtCore.QObject):
             #The code below opens the datasets
             dsVNIRBand = gdal.Open(VNIRBandPath, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
         try:
             #Capture the Red and the NIR bands
@@ -651,7 +651,7 @@ class EstimateLST(QtCore.QObject):
                 self.progress.emit(100)
                 self.finished.emit(ret)
                     
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
             self.progress.emit(100)
     
@@ -660,7 +660,7 @@ class EstimateLST(QtCore.QObject):
             #The code below opens the datasets
             dsNdviBand = gdal.Open(ndviRaster, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
         try:
             #Capture the Red and the NIR bands
@@ -748,7 +748,7 @@ class EstimateLST(QtCore.QObject):
                 self.progress.emit(100)
                 self.finished.emit(ret)
                 
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
 
     def zhangLSEalgorithm(self, ndviRaster, outputPath, rasterType, addToQGIS):
@@ -756,7 +756,7 @@ class EstimateLST(QtCore.QObject):
             #The code below opens the datasets
             dsNdviBand = gdal.Open(ndviRaster, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
             
         try:
@@ -824,7 +824,7 @@ class EstimateLST(QtCore.QObject):
                 ret = None
                 self.progress.emit(100)
                 self.finished.emit(ret)
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
 
     def radiativeTransferEquation(self, sensorType, bandNo, upWellingRadiance, downWellingRadiance, toaRadiance, atmTrans, lse, outputPath, unit, rasterFormat, addToQGIS):
@@ -834,7 +834,7 @@ class EstimateLST(QtCore.QObject):
             dsLSE = gdal.Open(lse, gdal.GA_ReadOnly)
             self.progress.emit(20)
             
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
         try:
             #Set the K1 and K2 constants
@@ -952,7 +952,7 @@ class EstimateLST(QtCore.QObject):
                 ret = None
                 self.progress.emit(100)
                 self.finished.emit(ret)
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
     
     def singleChannelAlgorithm(self, sensorType, atmWaterVapour, radiance,  bt, lse, outputPath, unit, rasterType, addToQGIS):
@@ -962,7 +962,7 @@ class EstimateLST(QtCore.QObject):
             dsLSE = gdal.Open(lse, gdal.GA_ReadOnly)
             dsRad = gdal.Open(radiance, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
             self.kill()
         try:
@@ -1082,7 +1082,7 @@ class EstimateLST(QtCore.QObject):
                 ret = None
                 self.progress.emit(100)
                 self.finished.emit(ret)
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
 
     def monoWindowAlgorithm(self, atmTrans, nearSurfTemp, atmProfile, bt, lse, outputPath, unit, rasterType, addToQGIS):
@@ -1091,7 +1091,7 @@ class EstimateLST(QtCore.QObject):
             dsBT = gdal.Open(bt, gdal.GA_ReadOnly)
             dsLSE = gdal.Open(lse, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError,e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
             self.kill()
         try:
@@ -1202,7 +1202,7 @@ class EstimateLST(QtCore.QObject):
                 self.progress.emit(100)
                 self.finished.emit(ret)
                 
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
     
     def planckEquation(self, sensorType, bandNo, bt, lse, outputPath, unit, rasterType, addToQGIS):
@@ -1211,7 +1211,7 @@ class EstimateLST(QtCore.QObject):
             dsBT  = gdal.Open(bt, gdal.GA_ReadOnly)
             dsLSE = gdal.Open(lse, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
         try:
             #Set the wavelengths of the emitted radiances according to the sensor selected
@@ -1319,7 +1319,7 @@ class EstimateLST(QtCore.QObject):
                 self.progress.emit(100)
                 self.finished.emit(ret)
                 
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
             
     def calcBrightnessTemp(self, sensorType, bandNo, radiance, outputPath, fileType, addToQGIS):
@@ -1327,7 +1327,7 @@ class EstimateLST(QtCore.QObject):
             #The code below opens the datasets
             dsRadianceBand = gdal.Open(radiance, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
         try:
             radianceBand = dsRadianceBand.GetRasterBand(1)
@@ -1421,7 +1421,7 @@ class EstimateLST(QtCore.QObject):
                 self.progress.emit(100)
                 self.finished.emit(ret)
                 
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
                 
     def calcTMRadiance(self, thermalBand, outputPath, fileType, metadata, addToQGIS):
@@ -1429,7 +1429,7 @@ class EstimateLST(QtCore.QObject):
             #The code below opens the datasets
             dsThermalBand = gdal.Open(thermalBand, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
         try:
             #Capture the Red and the NIR bands
@@ -1498,7 +1498,7 @@ class EstimateLST(QtCore.QObject):
                 self.progress.emit(100)
                 self.finished.emit(ret)
                 
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
     
     def calcETMRadiance(self, thermalBand, gain, outputPath, fileType, metadata, addToQGIS):
@@ -1506,7 +1506,7 @@ class EstimateLST(QtCore.QObject):
             #The code below opens the datasets
             dsThermalBand = gdal.Open(thermalBand, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
         try:
             #Capture the Red and the NIR bands
@@ -1575,7 +1575,7 @@ class EstimateLST(QtCore.QObject):
                 ret = None
                 self.progress.emit(100)
                 self.finished.emit(ret)
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
     
     def calcTIRSRadiance(self, thermalBand, bandNo, calibFactor, outputPath, fileType, metadata, addToQGIS):
@@ -1583,7 +1583,7 @@ class EstimateLST(QtCore.QObject):
             #The code below opens the datasets
             dsThermalBand = gdal.Open(thermalBand, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
         try:
             #Capture the Red and the NIR bands
@@ -1664,7 +1664,7 @@ class EstimateLST(QtCore.QObject):
                 self.progress.emit(100)
                 self.finished.emit(ret)
                 
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())  
     
     def readMetadataFile(self, metadataPath, sensorType, gain):
@@ -1718,7 +1718,7 @@ class EstimateLST(QtCore.QObject):
             
             #Close the metadata file 
             metadata.close
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
 
     def calcNDVI(self, redBandPath, NIRBandPath, outputPath, rasterType, addToQGIS):
@@ -1727,7 +1727,7 @@ class EstimateLST(QtCore.QObject):
             dsRedBand = gdal.Open(redBandPath, gdal.GA_ReadOnly)
             dsNIRBand = gdal.Open(NIRBandPath, gdal.GA_ReadOnly)
             self.progress.emit(20)
-        except IOError, e:
+        except IOError as e:
             self.error.emit(e, traceback.format_exc())
         try:
             #Capture the Red and the NIR bands
@@ -1789,7 +1789,7 @@ class EstimateLST(QtCore.QObject):
                 self.progress.emit(100)
                 self.finished.emit(ret)
                     
-        except RuntimeError, e:
+        except RuntimeError as e:
             self.error.emit(e, traceback.format_exc())
             
     def kill(self):
@@ -1947,7 +1947,7 @@ class EstimateLST(QtCore.QObject):
                                    self.outputPath, self.rasterType, self.unit, self.addToQGIS)
 
     finished = QtCore.pyqtSignal(object)
-    error    = QtCore.pyqtSignal(Exception, basestring)
+    error    = QtCore.pyqtSignal(Exception, str)
     progress = QtCore.pyqtSignal(int)
     
 
