@@ -23,13 +23,13 @@
 
 import os
 
-from PyQt4 import QtGui, uic
+from qgis.PyQt import QtWidgets, uic
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'lst_tool_dialog_base.ui'))
 
 
-class LandSurfaceTemperatureDialog(QtGui.QDialog, FORM_CLASS):
+class LandSurfaceTemperatureDialog(QtWidgets.QDialog, FORM_CLASS):
     def __init__(self, parent=None):
         """Constructor."""
         super(LandSurfaceTemperatureDialog, self).__init__(parent)

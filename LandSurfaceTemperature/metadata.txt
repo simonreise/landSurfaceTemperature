@@ -8,7 +8,7 @@
 
 [general]
 name=Land Surface Temperature
-qgisMinimumVersion=2.0
+qgisMinimumVersion=3.0
 description=This tool extracts Land Surface Temperature from satellite imagery
 version=0.6
 author=Milton Isaya

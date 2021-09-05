@@ -21,14 +21,15 @@
  ***************************************************************************/
 """
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 # Initialize Qt resources from file resources.py
-import resources
+from . import resources
 # Import the code for the dialog
-from lst_tool_dialog import LandSurfaceTemperatureDialog
+from .lst_tool_dialog import LandSurfaceTemperatureDialog
 from qgis.core import QgsProject
-from core.lst_funcs import *
+from .core.lst_funcs import *
 import os.path
 import qgis.core
 from qgis.utils import iface
@@ -41,7 +42,7 @@ from qgis.gui import QgsMessageBar
 #The imports below are done to enable the code in different directories to work in PyQGis
 import sys
 sys.path.append('~/Scripts/python')
-from core.lst_funcs import EstimateLST
+from .core.lst_funcs import EstimateLST
 
 
 class LandSurfaceTemperature:
@@ -78,10 +79,10 @@ class LandSurfaceTemperature:
 
         # Declare instance attributes
         self.actions = []
-        self.menu = self.tr(u'&Land Surface Temperature')
+        self.menu = self.tr('&Land Surface Temperature')
         # TODO: We are going to let the user set this up in a future iteration
-        self.toolbar = self.iface.addToolBar(u'LandSurfaceTemperature')
-        self.toolbar.setObjectName(u'LandSurfaceTemperature')
+        self.toolbar = self.iface.addToolBar('LandSurfaceTemperature')
+        self.toolbar.setObjectName('LandSurfaceTemperature')
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -178,7 +179,7 @@ class LandSurfaceTemperature:
         icon_path = ':/plugins/LandSurfaceTemperature/icons/landsat_8.ico'
         self.add_action(
             icon_path,
-            text=self.tr(u'Land Surface Temperature'),
+            text=self.tr('Land Surface Temperature'),
             callback=self.run,
             parent=self.iface.mainWindow())   
         
@@ -301,23 +302,23 @@ class LandSurfaceTemperature:
         self.asterSWAOutputFile()
     
     def uiAsterB13Brw(self):
-        self.bt = QFileDialog.getOpenFileName(self.dlg, 'Open the band 13 brightness temperature raster', '.')
+        self.bt, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the band 13 brightness temperature raster', '.')
         self.dlg.lineEditSWAbt13.setText(self.bt)
     
     def uiAsterB14Brw(self):
-        self.bt = QFileDialog.getOpenFileName(self.dlg, 'Open the band 14 brightness temperature raster', '.')
+        self.bt, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the band 14 brightness temperature raster', '.')
         self.dlg.lineEditSWAbt14.setText(self.bt)
     
     def uiAsterLse13Brw(self):
-        self.lse = QFileDialog.getOpenFileName(self.dlg, 'Open the band 13 land surface emissivity raster', '.')
+        self.lse, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the band 13 land surface emissivity raster', '.')
         self.dlg.lineEditSWAlse13.setText(self.lse)
     
     def uiAsterLse14Brw(self):
-        self.lse = QFileDialog.getOpenFileName(self.dlg, 'Open the band 14 surface emissivity raster', '.')
+        self.lse, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the band 14 surface emissivity raster', '.')
         self.dlg.lineEditSWAlse14.setText(self.lse)
         
     def uiAsterOutputBrw(self):
-        self.lst = QFileDialog.getSaveFileName(self.dlg, 'Output save location', '.')
+        self.lst, _filter = QFileDialog.getSaveFileName(self.dlg, 'Output save location', '.')
         self.dlg.lineEditSWAOut.setText(self.lst)
         
     def uiAsterSWAcalc(self):
@@ -390,27 +391,27 @@ class LandSurfaceTemperature:
         self.closePlugin() 
     
     def uiAsterLseNdviBrw(self):
-        self.ndvi = QFileDialog.getOpenFileName(self.dlg, 'Select the NDVI raster file', '.')
+        self.ndvi, _filter = QFileDialog.getOpenFileName(self.dlg, 'Select the NDVI raster file', '.')
         self.dlg.asterLSEndvi.setText(self.ndvi)
     
     def uiAsterLseOutputBrw(self, ):
-        self.lse = QFileDialog.getSaveFileName(self.dlg, 'Output save location', '.')
+        self.lse, _filter = QFileDialog.getSaveFileName(self.dlg, 'Output save location', '.')
         self.dlg.asterLSEoutput.setText(self.lse)
         
     def uiSingleAsterBrwLSE(self):
-        self.lse = QFileDialog.getOpenFileName(self.dlg, 'Select the land surface emissivity raster file', '.')
+        self.lse, _filter = QFileDialog.getOpenFileName(self.dlg, 'Select the land surface emissivity raster file', '.')
         self.dlg.singleAsterLSE.setText(self.lse)
 
     def uiSingleAsterBrwRadiance(self):
-        self.radiance = QFileDialog.getOpenFileName(self.dlg, 'Open the radiance raster', '.')
+        self.radiance, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the radiance raster', '.')
         self.dlg.singleAsterRadiance.setText(self.radiance)
     
     def uiSingleAsterBrwBriTemp(self):
-        self.bt = QFileDialog.getOpenFileName(self.dlg, 'Open the brightness temperature raster', '.')
+        self.bt, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the brightness temperature raster', '.')
         self.dlg.singleAsterBriTemp.setText(self.bt)
         
     def uiSingleAsterBrwOutput(self):
-        self.out = QFileDialog.getSaveFileName(self.dlg, 'Output save location', '.')
+        self.out, _filter = QFileDialog.getSaveFileName(self.dlg, 'Output save location', '.')
         self.dlg.singleAsterOutputLocation.setText(self.out)
         
     def uiAsterSingleChannelCalc(self):
@@ -512,11 +513,11 @@ class LandSurfaceTemperature:
         self.closePlugin()
         
     def brwZhangNDVI(self):
-        self.ndvi = QFileDialog.getOpenFileName(self.dlg, 'Browse for NDVI', '.')
+        self.ndvi, _filter = QFileDialog.getOpenFileName(self.dlg, 'Browse for NDVI', '.')
         self.dlg.zhangNDVILineEdit.setText(self.ndvi)
     
     def brwZhangOutput(self):
-        self.output = QFileDialog.getSaveFileName(self.dlg, 'Save LSE', '.')
+        self.output, _filter = QFileDialog.getSaveFileName(self.dlg, 'Save LSE', '.')
         self.dlg.zhangOutputLineEdit.setText(self.output)
         
     def clearZhangFields(self):
@@ -588,15 +589,15 @@ class LandSurfaceTemperature:
         self.dlg.rteAddToProject.setChecked(False)
         
     def uiBrwRTEtoa(self):
-        self.toa = QFileDialog.getOpenFileName(self.dlg, 'Open the radiance raster file', '.')
+        self.toa, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the radiance raster file', '.')
         self.dlg.rteTOA.setText(self.toa)
 
     def uiBrwRTElse(self):
-        self.lse = QFileDialog.getOpenFileName(self.dlg, 'Open the land surface emissivity raster file', '.')
+        self.lse, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the land surface emissivity raster file', '.')
         self.dlg.rteLSE.setText(self.lse)
         
     def uiBrwRTEout(self):
-        self.out = QFileDialog.getSaveFileName(self.dlg, 'Output save location', '.')
+        self.out, _filter = QFileDialog.getSaveFileName(self.dlg, 'Output save location', '.')
         self.dlg.rteOutput.setText(self.out)
 
     def getGdalRasterFormats(self):
@@ -621,19 +622,19 @@ class LandSurfaceTemperature:
         self.dlg.singleAddToProject.setChecked(False)
         
     def uiBrwSingleRad(self):
-        self.rad = QFileDialog.getOpenFileName(self.dlg, 'Open the radiance raster file', '.')
+        self.rad, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the radiance raster file', '.')
         self.dlg.singleRad.setText(self.rad)
     
     def uiBrwSingleBriTemp(self):
-        self.bt = QFileDialog.getOpenFileName(self.dlg, 'Open the brightness temperature raster file', '.')
+        self.bt, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the brightness temperature raster file', '.')
         self.dlg.singleBriTemp.setText(self.bt)
     
     def uiBrwSingleLse(self):
-        self.lse = QFileDialog.getOpenFileName(self.dlg, 'Open the land surface emissivity raster file', '.')
+        self.lse, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the land surface emissivity raster file', '.')
         self.dlg.singleLSE.setText(self.lse)
     
     def uiBrwOutputRaster(self):
-        self.outputRaster = QFileDialog.getSaveFileName(self.dlg, 'Select the output file location', '.')
+        self.outputRaster, _filter = QFileDialog.getSaveFileName(self.dlg, 'Select the output file location', '.')
         self.dlg.singleOutput.setText(self.outputRaster)
     
     def calcSingleChannelAlgorithm(self):
@@ -676,15 +677,15 @@ class LandSurfaceTemperature:
         self.closePlugin()
     
     def uiBrwMonoBriTemp(self):
-        self.bt = QFileDialog.getOpenFileName(self.dlg, 'Open the brightness temperature raster file', '.')
+        self.bt, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the brightness temperature raster file', '.')
         self.dlg.monoBriTemp.setText(self.bt)
     
     def uiBrwMonoLSE(self):
-        self.lse = QFileDialog.getOpenFileName(self.dlg, 'Open the land surface emissivity raster file', '.')
+        self.lse, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the land surface emissivity raster file', '.')
         self.dlg.monoLSE.setText(self.lse)
     
     def uiBrwMonoOutput(self):
-        self.outputRaster = QFileDialog.getSaveFileName(self.dlg, 'Select the output file location', '.')
+        self.outputRaster, _filter = QFileDialog.getSaveFileName(self.dlg, 'Select the output file location', '.')
         self.dlg.monoOutputRaster.setText(self.outputRaster)
 
     def clearMonoWindowFields(self):
@@ -787,15 +788,15 @@ class LandSurfaceTemperature:
                 self.dlg.plkBandNo.addItem(str(self.tirsBands[self.i]))
                 
     def uiPlkBtBrw(self):
-        self.bt = QFileDialog.getOpenFileName(self.dlg, 'Open the brightness temperature raster file', '.')
+        self.bt, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the brightness temperature raster file', '.')
         self.dlg.plankBt.setText(self.bt)
     
     def uiPlkLSEBrw(self):
-        self.lse = QFileDialog.getOpenFileName(self.dlg, 'Open the Land Surface Emissivity raster file', '.')
+        self.lse, _filter = QFileDialog.getOpenFileName(self.dlg, 'Open the Land Surface Emissivity raster file', '.')
         self.dlg.plankLSE.setText(self.lse)
     
     def uiPlkOutBrw(self):
-        self.lst = QFileDialog.getSaveFileName(self.dlg, 'Select an output file location', '.')
+        self.lst, _filter = QFileDialog.getSaveFileName(self.dlg, 'Select an output file location', '.')
         self.dlg.plankOutput.setText(self.lst)
     
     def uiCalcPlankEqn(self):
@@ -866,11 +867,11 @@ class LandSurfaceTemperature:
         self.closePlugin()
 
     def uiBtBrwBtOutput(self):
-        self.outputRaster = QFileDialog.getSaveFileName(self.dlg, 'Output file file location', '.')
+        self.outputRaster, _filter = QFileDialog.getSaveFileName(self.dlg, 'Output file file location', '.')
         self.dlg.btOutputRaster.setText(self.outputRaster)
         
     def uiBtBrwRadiance(self):
-        self.radiance = QFileDialog.getOpenFileName(self.dlg, 'Select a radiance raster file', '.')
+        self.radiance, _filter = QFileDialog.getOpenFileName(self.dlg, 'Select a radiance raster file', '.')
         self.dlg.btRadianceRaster.setText(self.radiance)
         
     def uiChangeNDVISensorInput(self):
@@ -1240,39 +1241,39 @@ class LandSurfaceTemperature:
         self.dlg.lseNDVIthresholdAddToProject.setChecked(False)
      
     def uiRadMetadataBrw(self):
-        self.metadata = QFileDialog.getOpenFileName(self.dlg, 'Select a metadata file', "",'*.txt')
+        self.metadata, _filter = QFileDialog.getOpenFileName(self.dlg, 'Select a metadata file', "",'*.txt')
         self.dlg.radMetadata.setText(self.metadata)
     
     def uiRadOutputBrw(self):
-        self.outputRaster = QFileDialog.getSaveFileName(self.dlg, 'Select the radiance output file location ', '.')
+        self.outputRaster, _filter = QFileDialog.getSaveFileName(self.dlg, 'Select the radiance output file location ', '.')
         self.dlg.radOutputRaster.setText(self.outputRaster)
         
     def uiRadThermalBrw(self):
-        self.thermalBandPath = QFileDialog.getOpenFileName(self.dlg, 'Select a thermal infrared rasterfile ', '.')
+        self.thermalBandPath, _filter = QFileDialog.getOpenFileName(self.dlg, 'Select a thermal infrared rasterfile ', '.')
         self.dlg.radThermalBand.setText(self.thermalBandPath)
     
     def uiNDVIBrwNIR(self):
-        self.NIRBandPath = QFileDialog.getOpenFileName(self.dlg, 'Select a near infrared raster file', '.')
+        self.NIRBandPath, _filter = QFileDialog.getOpenFileName(self.dlg, 'Select a near infrared raster file', '.')
         self.dlg.ndviLineEditNIR.setText(self.NIRBandPath)
         
     def uiNDVIBrwVNIR(self):
-        self.vnirBandPath = QFileDialog.getOpenFileName(self.dlg, 'Select a visible and near Infrared raster file', '.')
+        self.vnirBandPath, _filter = QFileDialog.getOpenFileName(self.dlg, 'Select a visible and near Infrared raster file', '.')
         self.dlg.ndviLineEditVNIR.setText(self.vnirBandPath)
     
     def uiNDVIBrwRed(self):
-        self.RedBandPath = QFileDialog.getOpenFileName(self.dlg, 'Select a red raster file', '.')
+        self.RedBandPath, _filter = QFileDialog.getOpenFileName(self.dlg, 'Select a red raster file', '.')
         self.dlg.ndviLineEditRed.setText(self.RedBandPath)
     
     def uiNDVIBrwOut(self):
-        self.outBandPath = QFileDialog.getSaveFileName(self.dlg, 'Select NDVI file location', '.')
+        self.outBandPath, _filter = QFileDialog.getSaveFileName(self.dlg, 'Select NDVI file location', '.')
         self.dlg.ndviLineEditOutputRaster.setText(self.outBandPath)
     
     def uiNDVIThresholdLSEBrwNDVI(self):
-        self.outBandPath = QFileDialog.getOpenFileName(self.dlg, 'Select the NDVI raster file', '.')
+        self.outBandPath, _filter = QFileDialog.getOpenFileName(self.dlg, 'Select the NDVI raster file', '.')
         self.dlg.lseNDVIthresholdNDVI.setText(self.outBandPath)
         
     def uiNDVIThresholdLSEBrwSave(self):
-        self.outBandPath = QFileDialog.getSaveFileName(self.dlg, 'Select LSE file save location', '.')
+        self.outBandPath, _filter = QFileDialog.getSaveFileName(self.dlg, 'Select LSE file save location', '.')
         self.dlg.lseNDVIthresholdOutputRaster.setText(self.outBandPath)
     
     def closePlugin(self):
@@ -1293,7 +1294,7 @@ class LandSurfaceTemperature:
         """Removes the plugin menu item and icon from QGis Gui."""
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&Land Surface Temperature'),
+                self.tr('&Land Surface Temperature'),
                 action)
             self.iface.removeToolBarIcon(action)
         # remove the toolbar
@@ -1306,14 +1307,14 @@ class LandSurfaceTemperature:
         worker = EstimateLST(self.processName, self.argList)
         #Configure the QgsMessageBar
         messageBar  = self.iface.messageBar().createMessage(message)
-        progressBar = QtGui.QProgressBar()
+        progressBar = QtWidgets.QProgressBar()
         progressBar.setAlignment(QtCore.Qt.AlignVCenter)
-        cancelButton = QtGui.QPushButton()
+        cancelButton = QtWidgets.QPushButton()
         cancelButton.setText('Cancel')
         cancelButton.clicked.connect(worker.kill)
         messageBar.layout().addWidget(progressBar)
         messageBar.layout().addWidget(cancelButton)
-        self.iface.messageBar().pushWidget(messageBar, self.iface.messageBar().INFO)
+        self.iface.messageBar().pushWidget(messageBar, Qgis.Info)
         self.messageBar = messageBar
 
         #start the worker in a new thread
@@ -1341,7 +1342,7 @@ class LandSurfaceTemperature:
             iface.addRasterLayer(ret, self.processName)
         else:
             #Notify the user that an error has occurred
-            self.iface.messageBar().pushMessage('Something went wrong! See the message log for more information.', level=QgsMessageBar.CRITICAL, duration = 5)
+            self.iface.messageBar().pushMessage('Finished.', level=Qgis.Info, duration = 5)
 
     def workerError(self, e, exception_string):
         QgsMessageLog.logMessage('Worker thread raised an exception: \n'.format(exception_string), level = QgsMessageLog.CRITICAL)
